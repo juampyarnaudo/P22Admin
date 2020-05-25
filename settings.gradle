@@ -1,0 +1,2 @@
+rootProject.name='P22Admin'
+include ':app'
