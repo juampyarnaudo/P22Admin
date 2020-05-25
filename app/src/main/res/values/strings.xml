@@ -1,3 +1,44 @@
 <resources>
-    <string name="app_name">P22Admin</string>
+    <string name="app_name">AP Centroentrenamiento</string>
+    <!--    Login View   -->
+    <string name="login_email">Ingresar su correo</string>
+    <string name="login_logout">CERRAR SESIÓN</string>
+    <string name="login_password">Ingresar su contraseña</string>
+    <string name="login_password_admin">PIN Admin</string>
+    <string name="login_confirm_password">Confirmar Contraseña</string>
+    <string name="login_sign_in">Ingresar</string>
+    <string name="login_sign_up">Registrarse</string>
+    <string name="login_reset_password">Reiniciar mi contraseña</string>
+    <string name="login_forgot_password">Me olvide mi contraseña</string>
+    <string name="login_create_account">Crear una nueva cuenta</string>
+    <string name="login_go_login">Volver al login</string>
+    <string name="login_forgot_text">Por Favor Ingresar un Correo para poder recuperar la contraseña.</string>
+    <string name="login_sign_in_google">Ingresar con Google</string>
+    <string name="prefs_file">com.jparnaudo.apcentro22.PREFERENCE_FILE_KEY</string>
+    <!--    Fragment   -->
+    <string name="user_name">Arnaudo Juan Pablo</string>
+    <string name="user_email">iarnaudojuanpablo@gmail.com</string>
+    <string name="open_drawer">Navigation Drawer is open</string>
+    <string name="close_drawer">Navigation Drawer is close</string>
+    <string name="home_fragment_title">Home</string>
+    <string name="home_fragment_hello">Hello from Home</string>
+    <string name="tu_cuenta_fragment_title">Tu Cuenta</string>
+    <string name="tu_cuenta_fragment_hello">Hello from Tu Cuenta</string>
+    <string name="ejercicios_fragment_title">Ejercicios</string>
+    <string name="ejercicios_fragment_hello">Hello from Ejercicios</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_bottom_profile">Perfil</string>
+    <string name="navigation_bottom_contacto">Contacto</string>
+    <string name="navigation_bottom_logout">Cerrar sesión</string>
+
+    <string name="contacto">Los Profesores</string>
+    <string name="Oscar_Molina">Oscar Molina Piposca</string>
+    <string name="Andy_Cerkvenih">Andy Cerkvenih</string>
+    <string name="Instagram">p22centrodeentrenamiento</string>
+    <string name="horarios">horarios de 9:00 ~ 12:30 y 14:00 ~ 21:30</string>
+    <string name="msg_token_fmt">123</string>
+
+
 </resources>
