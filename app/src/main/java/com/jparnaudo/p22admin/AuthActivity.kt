@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -14,22 +13,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jparnaudo.apcentro22.login.ForgotPasswordActivity
+import com.jparnaudo.p22admin.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
-import kotlin.properties.Delegates
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
     private lateinit var progressBar: ProgressDialog
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var database: FirebaseDatabase
+    private lateinit var databaseReference: FirebaseFirestore
+    private lateinit var database: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-    private var email by Delegates.notNull<String>()
-    private var password by Delegates.notNull<String>()
     val usuario = FirebaseAuth.getInstance().currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
 // Duermo la app por 1500 milisegundos para que se vea el Splash
@@ -63,9 +58,9 @@ class AuthActivity : AppCompatActivity() {
         txtEmail = findViewById(R.id.metEmail)
         txtPassword = findViewById(R.id.metPassword)
         progressBar = ProgressDialog(this)
-        database = FirebaseDatabase.getInstance()
+        database = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-        databaseReference = database.reference.child("Users")
+//        databaseReference = database.reference.child("Users")
     }
 
     override fun onStart() {
@@ -82,51 +77,6 @@ class AuthActivity : AppCompatActivity() {
             updateUserInfoAndGoHome()
         }
     }
-    private fun createNewAccount() {
-
-        //Obtenemos los datos de nuestras cajas de texto
-        email = txtEmail.text.toString()
-        password = txtPassword.text.toString()
-
-//Verificamos que los campos estén llenos
-        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-
-/*Antes de iniciar nuestro registro bloqueamos la pantalla o también podemos usar una barra de proceso por lo que progressbar está obsoleto*/
-
-            progressBar.setMessage("Usuario registrado...")
-            progressBar.show()
-
-//vamos a dar de alta el usuario con el correo y la contraseña
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) {
-
-//Si está en este método quiere decir que todo salio bien en la autenticación
-
-/*Una vez que se dio de alta la cuenta vamos a dar de alta la información en la base de datos*/
-
-/*Vamos a obtener el id del usuario con que accedio con currentUser*/
-                    val user:FirebaseUser = auth.currentUser!!
-/*Damos de alta la información del usuario enviamos el la referencia para guardarlo en la base de datos  de preferencia enviamos el id para que no se repita*/
-                    val currentUserDb = databaseReference.child(user.uid)
-//Agregamos el nombre y el apellido dentro de user/id/
-//                    currentUserDb.child("firstName").setValue(firstName)
-//                    currentUserDb.child("lastName").setValue(lastName)
-                    currentUserDb.child("Email").setValue(email)
-//Por último nos vamos a la vista home
-                    updateUserInfoAndGoHome()
-
-                }.addOnFailureListener{
-// si el registro falla se mostrara este mensaje
-                    Toast.makeText(this, "Error en la autenticación.",
-                        Toast.LENGTH_SHORT).show()
-                }
-
-        } else {
-            Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
     private fun updateUserInfoAndGoHome() {
         //Nos vamos a la actividad home
         val intent = Intent(this, MainActivity::class.java)
@@ -138,40 +88,26 @@ class AuthActivity : AppCompatActivity() {
     }
     private fun setup() {
         title = "Autenticación"
-        signInButton.setOnClickListener {
-            if (metEmail.text.isNotEmpty() && metPassword.text.isNotEmpty()) {
-                progressBar.setMessage("Usuario registrado...")
-                progressBar.show()
-                auth.createUserWithEmailAndPassword(
-                    metEmail.text.toString(), metPassword.text.toString()
-                ).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val user:FirebaseUser = auth.currentUser!!
-                        val currentUserDb = databaseReference.child(user.uid)
-                        currentUserDb.child("Email").setValue(txtEmail.text.toString())
-                       updateUserInfoAndGoHome()
-
-                    } else {
-                        showAlert()
-                    }
-                }
-            }
-
-        }
         logInButton.setOnClickListener {
             if (metEmail.text.isNotEmpty() && metPassword.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                    metEmail.text.toString(), metPassword.text.toString()
-                ).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        metEmail.setText("")
-                        metPassword.setText("")
-                        updateUserInfoAndGoHome()
+                val str: String = etPinAdmin.text.toString()
+                if (str == "1234"){
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                        metEmail.text.toString(), metPassword.text.toString()
+                    ).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            metEmail.setText("")
+                            metPassword.setText("")
+                            updateUserInfoAndGoHome()
 
-                    } else {
-                        showAlert()
+                        } else {
+                            showAlert()
+                        }
                     }
+                }else{
+                    toast("ingresar el pin correcto")
                 }
+
             }
         }
     }
